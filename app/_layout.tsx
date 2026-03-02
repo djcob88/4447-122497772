@@ -1,32 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { createContext, useState } from 'react';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+export type Student = {
+  id: number;
+  name: string;
+  major: string;
+  year: string;
+  count: number;
+};
+
+type StudentContextType = {
+  students: Student[];
+  setStudents: React.Dispatch<React.SetStateAction<Student[]>>;
+};
+
+export const StudentContext =
+  createContext<StudentContextType | null>(null);
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const [students, setStudents] = useState<Student[]>([
+    { id: 1, name: 'Emilia', major: 'Computer Science', year: '3', count: 0 },
+    { id: 2, name: 'Jackie', major: 'Business', year: '2', count: 0 },
+    { id: 3, name: 'Sammy', major: 'Engineering', year: '4', count: 0 },
+  ]);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {/* Tabs are the main app */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
-        {/* Student details pushed on top */}
-        <Stack.Screen
-          name="student/[id]"
-          options={{ title: 'Student Details' }}
-        />
-
-        {/* Keep modal from template */}
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: 'modal', title: 'Modal' }}
-        />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <StudentContext.Provider value={{ students, setStudents }}>
+      <Stack />
+    </StudentContext.Provider>
   );
 }

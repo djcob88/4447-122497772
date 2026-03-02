@@ -1,21 +1,47 @@
-import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useContext } from 'react';
+import { Button, Text, View } from 'react-native';
+import { Student, StudentContext } from '../_layout';
 
-export default function StudentDetails() {
-  const { id } = useLocalSearchParams();
+export default function StudentDetail() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const context = useContext(StudentContext);
+
+  if (!context) return null;
+
+  const { students, setStudents } = context;
+
+  const student = students.find(
+    (s: Student) => s.id === Number(id)
+  );
+
+  if (!student) return null;
+
+  const deleteStudent = () => {
+    setStudents(students.filter(s => s.id !== Number(id)));
+    router.back();
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Student Details</Text>
-      <Text>Student ID: {id}</Text>
-      <Text style={{ marginTop: 10 }}>
-        In a real app this would fetch full student data.
-      </Text>
+    <View style={{ padding: 20 }}>
+      <Text style={{ fontSize: 22 }}>{student.name}</Text>
+      <Text>{student.major}</Text>
+      <Text>{student.year}</Text>
+
+      <Button
+        title="Edit"
+        onPress={() =>
+          router.push({
+            pathname: '../student/[id]/edit',
+            params: { id }
+          })
+        }
+      />
+
+      <Button title="Delete" onPress={deleteStudent} />
+
+      <Button title="Back" onPress={() => router.back()} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 22, marginBottom: 10 },
-});

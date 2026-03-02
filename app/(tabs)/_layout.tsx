@@ -7,10 +7,6 @@ export default function TabLayout() {
         name="index"
         options={{ title: 'Students' }}
       />
-      <Tabs.Screen
-        name="explore"
-        options={{ title: 'Explore' }}
-      />
     </Tabs>
   );
 }
