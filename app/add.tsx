@@ -1,12 +1,12 @@
-import { useRouter } from 'expo-router';
-import { useContext, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { db } from '@/db/client';
 import { students as studentsTable } from '@/db/schema';
+import { useRouter } from 'expo-router';
+import { useContext, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StudentContext } from './_layout';
 
 export default function AddStudent() {
