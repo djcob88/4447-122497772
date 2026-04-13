@@ -1,14 +1,13 @@
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { openDatabaseSync } from 'expo-sqlite';
 
-const sqlite = openDatabaseSync('students.db');
-
+const sqlite = openDatabaseSync('tasks.db');
 sqlite.execSync(`
-  CREATE TABLE IF NOT EXISTS students (
+  CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    major TEXT NOT NULL,
-    year TEXT NOT NULL,
+    category TEXT NOT NULL,
+    date TEXT NOT NULL,
     count INTEGER NOT NULL DEFAULT 0
   );
 `);

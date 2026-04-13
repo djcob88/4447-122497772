@@ -1,16 +1,13 @@
 import { db } from './client';
-import { students } from './schema';
+import { tasks } from './schema';
 
-export async function seedStudentsIfEmpty() {
-  const existing = await db.select().from(students);
+export async function seedTasksIfEmpty() {
+  const existing = await db.select().from(tasks);
+  if (existing.length > 0) return;
 
-  if (existing.length > 0) {
-    return;
-  }
-
-  await db.insert(students).values([
-    { name: 'Emilia', major: 'Computer Science', year: '3', count: 0 },
-    { name: 'Jackie', major: 'Business', year: '2', count: 0 },
-    { name: 'Sammy', major: 'Engineering', year: '4', count: 0 },
+  await db.insert(tasks).values([
+    { name: 'Morning Run', category: 'Fitness', date: '2024-01-01', count: 1 },
+    { name: 'Read', category: 'Learning', date: '2024-01-01', count: 2 },
+    { name: 'Meal Prep', category: 'Health', date: '2024-01-02', count: 1 },
   ]);
 }

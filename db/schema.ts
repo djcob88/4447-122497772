@@ -1,9 +1,9 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const students = sqliteTable('students', {
+export const tasks = sqliteTable('tasks', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
-  major: text('major').notNull(),
-  year: text('year').notNull(),
+  category: text('category').notNull(),
+  date: text('date').notNull(),
   count: integer('count').notNull().default(0),
 });
