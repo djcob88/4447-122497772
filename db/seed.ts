@@ -1,5 +1,5 @@
 import { db } from './client';
-import { trips } from './schema';
+import { trips, categories } from './schema';
 
 export async function seedTripsIfEmpty() {
   const existing = await db.select().from(trips);
@@ -9,5 +9,17 @@ export async function seedTripsIfEmpty() {
     { title: 'UK Trip', destination: 'Manchester', startDate: '2026-05-01', endDate: '2026-05-08', notes: '1 week trip to Manchester' },
     { title: 'Greece Trip', destination: 'Athens', startDate: '2026-06-01', endDate: '2026-06-08', notes: '1 week trip to Greece' },
     { title: 'France Trip', destination: 'Paris', startDate: '2026-07-01', endDate: '2026-07-08', notes: '1 week trip to France' },
+  ]);
+}
+
+export async function seedCategoriesIfEmpty() {
+  const existing = await db.select().from(categories);
+  if (existing.length > 0) return;
+
+  await db.insert(categories).values([
+    { name: 'Flights', colour: '#FF5733', icon: '🛫' },
+    { name: 'Accommodation', colour: '#33FF57', icon: '🏡' },
+    { name: 'Activities', colour: '#3357FF', icon: '🎯' },
+    { name: 'Food', colour: '#FF33A1', icon: '🍽️' },
   ]);
 }

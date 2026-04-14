@@ -11,6 +11,13 @@ sqlite.execSync(`
     end_date TEXT NOT NULL,
     notes TEXT
   );
+
+  CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    colour TEXT NOT NULL,
+    icon TEXT NOT NULL
+  );
 `);
 
 export const db = drizzle(sqlite);
