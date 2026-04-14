@@ -1,4 +1,4 @@
-import StudentCard from '@/components/StudentCard';
+import TripCard from '@/components/TripCard';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
 import { useRouter } from 'expo-router';
@@ -12,93 +12,54 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Student, StudentContext } from '../_layout';
+import { Trip, TripContext } from '../_layout';
 
 export default function IndexScreen() {
   const router = useRouter();
-  const context = useContext(StudentContext);
+  const context = useContext(TripContext);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedYear, setSelectedYear] = useState('All');
 
   if (!context) return null;
 
-  const { students } = context;
+  const { trips } = context;
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  const yearOptions = [
-    'All',
-    ...Array.from(new Set(students.map((student: Student) => String(student.year)))).sort(
-      (a, b) => Number(a) - Number(b)
-    ),
-  ];
 
-  const filteredStudents = students.filter((student: Student) => {
+  const filteredTrips = trips.filter((trip: Trip) => {
     const matchesSearch =
       normalizedQuery.length === 0 ||
-      student.name.toLowerCase().includes(normalizedQuery) ||
-      student.major.toLowerCase().includes(normalizedQuery);
-
-    const matchesYear =
-      selectedYear === 'All' || String(student.year) === selectedYear;
-
-    return matchesSearch && matchesYear;
+      trip.title.toLowerCase().includes(normalizedQuery) ||
+      trip.destination.toLowerCase().includes(normalizedQuery);
+    return matchesSearch;
   });
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScreenHeader
-        title="Students"
-        subtitle={`${students.length} enrolled`}
+        title="Trips"
+        subtitle={`${trips.length} planned`}
       />
 
       <PrimaryButton
-        label="Add Student"
+        label="Add Trip"
         onPress={() => router.push({ pathname: '../add' })}
       />
 
       <TextInput
         value={searchQuery}
         onChangeText={setSearchQuery}
-        placeholder="Search by name or major"
+        placeholder="Search by title or destination"
         style={styles.searchInput}
       />
-
-      <View style={styles.filterRow}>
-        {yearOptions.map((year) => {
-          const isSelected = selectedYear === year;
-
-          return (
-            <Pressable
-              key={year}
-              accessibilityLabel={`Filter by year ${year}`}
-              accessibilityRole="button"
-              onPress={() => setSelectedYear(year)}
-              style={[
-                styles.filterButton,
-                isSelected && styles.filterButtonSelected,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.filterButtonText,
-                  isSelected && styles.filterButtonTextSelected,
-                ]}
-              >
-                {year}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
 
       <ScrollView
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       >
-        {filteredStudents.length === 0 ? (
-          <Text style={styles.emptyText}>No students match your filters</Text>
+        {filteredTrips.length === 0 ? (
+          <Text style={styles.emptyText}>No trips match your search</Text>
         ) : (
-          filteredStudents.map((student: Student) => (
-            <StudentCard key={student.id} student={student} />
+          filteredTrips.map((trip: Trip) => (
+            <TripCard key={trip.id} trip={trip} />
           ))
         )}
       </ScrollView>

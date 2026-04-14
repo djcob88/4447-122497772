@@ -1,14 +1,15 @@
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { openDatabaseSync } from 'expo-sqlite';
 
-const sqlite = openDatabaseSync('tasks.db');
+const sqlite = openDatabaseSync('holiday-planner.db');
 sqlite.execSync(`
-  CREATE TABLE IF NOT EXISTS tasks (
+  CREATE TABLE IF NOT EXISTS trips (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    category TEXT NOT NULL,
-    date TEXT NOT NULL,
-    count INTEGER NOT NULL DEFAULT 0
+    title TEXT NOT NULL,
+    destination TEXT NOT NULL,
+    start_date TEXT NOT NULL,
+    end_date TEXT NOT NULL,
+    notes TEXT
   );
 `);
 

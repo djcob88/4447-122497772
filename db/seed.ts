@@ -1,13 +1,13 @@
 import { db } from './client';
-import { tasks } from './schema';
+import { trips } from './schema';
 
-export async function seedTasksIfEmpty() {
-  const existing = await db.select().from(tasks);
+export async function seedTripsIfEmpty() {
+  const existing = await db.select().from(trips);
   if (existing.length > 0) return;
 
-  await db.insert(tasks).values([
-    { name: 'Morning Run', category: 'Fitness', date: '2024-01-01', count: 1 },
-    { name: 'Read', category: 'Learning', date: '2024-01-01', count: 2 },
-    { name: 'Meal Prep', category: 'Health', date: '2024-01-02', count: 1 },
+  await db.insert(trips).values([
+    { title: 'UK Trip', destination: 'Manchester', startDate: '2026-05-01', endDate: '2026-05-08', notes: '1 week trip to Manchester' },
+    { title: 'Greece Trip', destination: 'Athens', startDate: '2026-06-01', endDate: '2026-06-08', notes: '1 week trip to Greece' },
+    { title: 'France Trip', destination: 'Paris', startDate: '2026-07-01', endDate: '2026-07-08', notes: '1 week trip to France' },
   ]);
 }

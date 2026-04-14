@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { StudentContext } from '../app/_layout';
+import { TripContext } from '../app/_layout';
 import IndexScreen from '../app/(tabs)/index';
 
 jest.mock('@/db/client', () => ({
@@ -19,23 +19,24 @@ jest.mock('react-native-safe-area-context', () => {
   return { SafeAreaView: View };
 });
 
-const mockStudent = {
+const mockTrip = {
   id: 1,
-  name: 'Test Student',
-  major: 'Computer Science',
-  year: '3',
-  count: 0,
+  title: 'Test Trip',
+  destination: 'Test Destination',
+  startDate: '2026-05-01',
+  endDate: '2026-05-08',
+  notes: 'Test Notes',
 };
 
 describe('IndexScreen', () => {
-  it('renders the student and the add button', () => {
+  it('renders the trip and the add button', () => {
     const { getByText } = render(
-      <StudentContext.Provider value={{ students: [mockStudent], setStudents: jest.fn() }}>
+      <TripContext.Provider value={{ trips: [mockTrip], setTrips: jest.fn() }}>
         <IndexScreen />
-      </StudentContext.Provider>
+      </TripContext.Provider>
     );
 
-    expect(getByText('Test Student')).toBeTruthy();
-    expect(getByText('Add Student')).toBeTruthy();
+    expect(getByText('Test Trip')).toBeTruthy();
+    expect(getByText('Add Trip')).toBeTruthy();
   });
 });

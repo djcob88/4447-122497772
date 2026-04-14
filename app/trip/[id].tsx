@@ -7,54 +7,55 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
-import { students as studentsTable } from '@/db/schema';
-import { Student, StudentContext } from '../_layout';
+import { trips as tripsTable } from '@/db/schema';
+import { Trip, TripContext } from '../_layout';
 
-export default function StudentDetail() {
+export default function TripDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const context = useContext(StudentContext);
+  const context = useContext(TripContext);
 
   if (!context) return null;
 
-  const { students, setStudents } = context;
+  const { trips, setTrips } = context;
 
-  const student = students.find(
-    (s: Student) => s.id === Number(id)
+  const trip = trips.find(
+    (t: Trip) => t.id === Number(id)
   );
 
-  if (!student) return null;
+  if (!trip) return null;
 
-  const deleteStudent = async () => {
+  const deleteTrip = async () => {
     await db
-      .delete(studentsTable)
-      .where(eq(studentsTable.id, Number(id)));
+      .delete(tripsTable)
+      .where(eq(tripsTable.id, Number(id)));
 
-    const rows = await db.select().from(studentsTable);
-    setStudents(rows);
+    const rows = await db.select().from(tripsTable);
+    setTrips(rows);
     router.back();
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScreenHeader title={student.name} subtitle="Student details" />
+      <ScreenHeader title={trip.title} subtitle="Trip details" />
       <View style={styles.tags}>
-        <InfoTag label="Major" value={student.major} />
-        <InfoTag label="Year" value={student.year} />
+        <InfoTag label="Destination" value={trip.destination} />
+        <InfoTag label="Start Date" value={trip.startDate} />
+        <InfoTag label="End Date" value={trip.endDate} />
       </View>
 
       <PrimaryButton
         label="Edit"
         onPress={() =>
           router.push({
-            pathname: '../student/[id]/edit',
+            pathname: '../trip/[id]/edit',
             params: { id }
           })
         }
       />
 
       <View style={styles.buttonSpacing}>
-        <PrimaryButton label="Delete" variant="secondary" onPress={deleteStudent} />
+        <PrimaryButton label="Delete" variant="secondary" onPress={deleteTrip} />
       </View>
     </SafeAreaView>
   );
