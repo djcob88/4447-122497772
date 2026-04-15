@@ -2,6 +2,9 @@ import { Trip } from '@/app/_layout';
 import InfoTag from '@/components/ui/info-tag';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { db } from '@/db/client';
+import { categories as categoriesTable } from '@/db/schema';
 
 type Props = {
   trip: Trip;
@@ -12,6 +15,17 @@ export default function TripCard({ trip }: Props) {
   const openDetails = () =>
     router.push({ pathname: '/trip/[id]', params: { id: trip.id.toString() } });
   const tripSummary = `${trip.title}, ${trip.destination}, ${trip.startDate}`;
+  const [category, setCategory] = useState<{ name: string; colour: string; icon: string } | null>(null);
+
+  useEffect(() => {
+    const loadCategory = async () => {
+      const rows = await db.select().from(categoriesTable);
+      const found = rows.find(c => c.id === trip.categoryId) ?? null;
+      setCategory(found);
+  };
+
+  void loadCategory();
+}, [trip.categoryId]);
 
   return (
     <Pressable
@@ -26,6 +40,12 @@ export default function TripCard({ trip }: Props) {
       <View>
         <Text style={styles.title}>{trip.title}</Text>
         <Text style={styles.destination}>{trip.destination}</Text>
+        {category && (
+          <View style={styles.categoryRow}>
+            <Text style={styles.categoryIcon}>{category.icon}</Text>
+            <Text style={styles.categoryText}>{category.name}</Text>
+          </View>
+)}
       </View>
 
       <View style={styles.tags}>
@@ -62,5 +82,18 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     fontSize: 14,
     marginTop: 4,
+  },
+  categoryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  categoryIcon: {
+    fontSize: 16,
+    marginRight: 6,
+  },
+  categoryText: {
+    fontSize: 13,
+    color: '#2c333c',
   },
 });

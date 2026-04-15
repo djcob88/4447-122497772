@@ -11,6 +11,7 @@ export type Trip = {
   startDate: string;
   endDate: string;
   notes: string | null;
+  categoryId: number;
 };
 
 type TripContextType = {
@@ -26,8 +27,8 @@ export default function RootLayout() {
 
   useEffect(() => {
     const loadTrips = async () => {
-      await seedTripsIfEmpty();
       await seedCategoriesIfEmpty();
+      await seedTripsIfEmpty();
       const rows = await db.select().from(tripsTable);
       setTrips(rows);
     };
