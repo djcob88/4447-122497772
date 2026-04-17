@@ -19,6 +19,16 @@ sqlite.execSync(`
     colour TEXT NOT NULL,
     icon TEXT NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS activities (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    trip_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    date TEXT NOT NULL,
+    duration_minutes INTEGER NOT NULL,
+    notes TEXT,
+    category_id INTEGER NOT NULL
+  );
 `);
 
 export const db = drizzle(sqlite);

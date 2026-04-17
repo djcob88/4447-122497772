@@ -20,7 +20,6 @@ export default function AddCategory() {
 
     const saveCategory = async () => {
         if (!name || !colour || !icon) return;
-
         await db.insert(categoriesTable).values({
             name,
             colour,

@@ -16,3 +16,13 @@ export const categories = sqliteTable('categories', {
   colour: text('colour').notNull(),
   icon: text('icon').notNull()
 }); 
+
+export const activities = sqliteTable('activities', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  tripId: integer('trip_id').notNull(),
+  title: text('title').notNull(),
+  date: text('date').notNull(),
+  durationMinutes: integer('duration_minutes').notNull(),
+  notes: text('notes'),
+  categoryId: integer('category_id').notNull()
+});

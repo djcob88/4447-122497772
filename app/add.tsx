@@ -58,10 +58,7 @@ export default function AddTrip() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <ScreenHeader title="Add Trip" subtitle="Create a new trip." />
         <View style={styles.form}>
           <FormField label="Title" value={title} onChangeText={setTitle} />

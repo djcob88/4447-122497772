@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { createContext, useEffect, useState } from 'react';
 import { db } from '@/db/client';
 import { trips as tripsTable } from '@/db/schema';
-import { seedTripsIfEmpty, seedCategoriesIfEmpty } from '@/db/seed';
+import { seedTripsIfEmpty, seedCategoriesIfEmpty, seedActivitiesIfEmpty } from '@/db/seed';
 
 export type Trip = {
   id: number;
@@ -29,6 +29,7 @@ export default function RootLayout() {
     const loadTrips = async () => {
       await seedCategoriesIfEmpty();
       await seedTripsIfEmpty();
+      await seedActivitiesIfEmpty();
       const rows = await db.select().from(tripsTable);
       setTrips(rows);
     };

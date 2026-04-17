@@ -1,20 +1,31 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useContext, useEffect, useState } from 'react';
+import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import InfoTag from '@/components/ui/info-tag';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
-import { trips as tripsTable, categories as categoriesTable } from '@/db/schema';
+import { trips as tripsTable, categories as categoriesTable, activities as activitiesTable } from '@/db/schema';
 import { Trip, TripContext } from '../_layout';
+
+export type Activity = {
+  id: number;
+  tripId: number;
+  title: string;
+  date: string;
+  durationMinutes: number;
+  notes: string | null;
+  categoryId: number;
+};
 
 export default function TripDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const context = useContext(TripContext);
   const [category, setCategory] = useState<{ name: string; colour: string; icon: string } | null>(null);
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   if (!context) return null;
 
@@ -36,6 +47,20 @@ export default function TripDetail() {
     void loadCategory();
   }, [trip]);
 
+ useFocusEffect(
+  useCallback(() => {
+    if (!trip) return;
+
+    const loadActivities = async () => {
+      const rows = await db.select().from(activitiesTable);
+      const activities = rows.filter(a => a.tripId === trip.id);
+      setActivities(activities);
+    };
+
+    void loadActivities();
+    }, [trip])
+  );
+
   if (!trip) return null;
 
   const deleteTrip = async () => {
@@ -50,6 +75,7 @@ export default function TripDetail() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <ScreenHeader title={trip.title} subtitle="Trip details" />
       {category && (
         <View style={styles.categoryRow}>
@@ -76,6 +102,36 @@ export default function TripDetail() {
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Delete" variant="secondary" onPress={deleteTrip} />
       </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Activities</Text>
+        {activities.length === 0 && (
+          <Text style={styles.emptyText}>No activities added yet</Text>
+        )}
+        {activities.map((activity) => (
+          <Pressable key={activity.id}
+            onPress={() =>
+              router.push({ pathname: '../trip/[id]/activity/[activityId]/edit' as any, params: { id, activityId: String(activity.id) }})
+            }
+            style={({ pressed }) => [styles.activityItem, pressed ? { opacity: 0.8 } : null,]}>
+            <Text style={styles.activityTitle}>{activity.title}</Text>
+            <Text style={styles.activityDate}>{activity.date}</Text>
+            <Text style={styles.activityDuration}>{activity.durationMinutes} minutes</Text>
+            {activity.notes && (
+              <Text style={styles.activityNotes}>{activity.notes}</Text>
+            )}
+          </Pressable>
+        ))}
+
+      <View style={styles.buttonSpacing}>
+        <PrimaryButton label="Add Activity"
+          onPress={() =>
+            router.push({pathname: '../trip/[id]/activities_add', params: { id }})
+          }
+        />
+      </View>
+
+      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -106,5 +162,46 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 15,
     color: '#2c333c',
+  },
+  section: {
+    marginTop: 24,
+  },
+  sectionTitle: {
+    color: '#0F172A',
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+  emptyText: {
+    color: '#475569',
+    fontSize: 15,
+  },
+  activityItem: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#E5E7EB',
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 12,
+    padding: 12,
+  },
+  activityTitle: {
+    color: '#111827',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  activityDate: {
+    color: '#475569',
+    fontSize: 14,
+    marginTop: 4,
+  },
+  activityDuration: {
+    color: '#475569',
+    fontSize: 14,
+    marginTop: 2,
+  },
+  activityNotes: {
+    color: '#334155',
+    fontSize: 14,
+    marginTop: 6,
   },
 });
