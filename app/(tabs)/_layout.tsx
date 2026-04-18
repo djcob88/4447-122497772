@@ -19,6 +19,10 @@ export default function TabLayout() {
         name="category/[id]/edit"
         options={{ href: null }}
       />
+      <Tabs.Screen
+        name="targets"
+        options={{ title: 'Targets' }}
+      />
     </Tabs>
   );
 }

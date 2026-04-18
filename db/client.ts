@@ -29,6 +29,11 @@ sqlite.execSync(`
     notes TEXT,
     category_id INTEGER NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS targets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  time_period TEXT NOT NULL,
+  target_minutes INTEGER NOT NULL);
 `);
 
 export const db = drizzle(sqlite);
