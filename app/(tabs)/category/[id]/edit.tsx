@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
 import { categories as categoriesTable } from '@/db/schema';
+
 
 export type Category = {
   id: number;
@@ -57,6 +58,7 @@ export default function EditCategory() {
   };
   return (
     <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.listContent}>
       <ScreenHeader title="Edit Category" subtitle={`Update ${category.name}`} />
       <View style={styles.form}>
         <FormField label="Name" value={name} onChangeText={setName} />
@@ -71,6 +73,7 @@ export default function EditCategory() {
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()} />
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -86,5 +89,9 @@ const styles = StyleSheet.create({
   },
   buttonSpacing: {
     marginTop: 10,
+  },
+  listContent: {
+    paddingBottom: 24,
+    paddingTop: 14,
   },
 });

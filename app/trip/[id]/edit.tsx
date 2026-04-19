@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
@@ -69,6 +69,7 @@ export default function EditTrip() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.listContent}>
       <ScreenHeader title="Edit Trip" subtitle={`Update ${trip.title}`} />
       <View style={styles.form}>
         <FormField label="Title" value={title} onChangeText={setTitle} />
@@ -92,6 +93,7 @@ export default function EditTrip() {
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()} />
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -126,5 +128,9 @@ const styles = StyleSheet.create({
     color: '#475569',
     fontSize: 14,
     marginBottom: 4,
+  },
+  listContent: {
+    paddingBottom: 24,
+    paddingTop: 14,
   },
 });

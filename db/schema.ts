@@ -30,5 +30,6 @@ export const activities = sqliteTable('activities', {
 export const targets = sqliteTable('targets', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   timePeriod: text('time_period').notNull(),
-  targetMinutes: integer('target_minutes').notNull()
+  targetMinutes: integer('target_minutes').notNull(),
+  categoryId: integer('category_id').notNull()
 });

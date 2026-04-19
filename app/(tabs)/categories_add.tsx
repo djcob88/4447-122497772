@@ -29,14 +29,14 @@ export default function AddCategory() {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.listContent}>
         <ScreenHeader title="Add Category" subtitle="Create a new category" />
 
         <View style={styles.form}>
           <FormField label="Name" value={name} onChangeText={setName} />
-          <FormField label="Colour (hex)" value={colour} onChangeText={setColour} />
-          <FormField label="Icon (emoji)" value={icon} onChangeText={setIcon} />
+          <FormField label="Colour" value={colour} onChangeText={setColour} />
+          <FormField label="Icon" value={icon} onChangeText={setIcon} />
         </View>
 
         <PrimaryButton label="Save Category" onPress={saveCategory} />

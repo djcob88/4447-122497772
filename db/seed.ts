@@ -17,9 +17,9 @@ export async function seedCategoriesIfEmpty() {
   if (existing.length > 0) return;
 
   await db.insert(categories).values([
-    { name: 'Flights', colour: '#FF5733', icon: '🛫' },
-    { name: 'Accommodation', colour: '#33FF57', icon: '🏡' },
-    { name: 'Activities', colour: '#3357FF', icon: '🎯' },
+    { name: 'Sightseeing', colour: '#FF5733', icon: '🔭' },
+    { name: 'Outdoors', colour: '#33FF57', icon: '🏞️' },
+    { name: 'Entertainment', colour: '#3357FF', icon: '🎯' },
     { name: 'Food', colour: '#FF33A1', icon: '🍽️' }
   ]);
 }
@@ -31,9 +31,9 @@ export async function seedActivitiesIfEmpty() {
   await db.insert(activities).values([
     { tripId: 1, title: 'Visit Old Trafford', date: '2026-05-02', durationMinutes: 120, notes: 'Watch a football match', categoryId: 3 },
     { tripId: 1, title: 'Go to the Grand Pacific', date: '2026-05-03', durationMinutes: 90, notes: 'Get dinner at the Grand Pacific', categoryId: 4 },
-    { tripId: 2, title: 'Visit Acropolis', date: '2026-06-02', durationMinutes: 180, notes: 'Guided tour of Acropolis', categoryId: 3 },
+    { tripId: 2, title: 'Go on the Meteora Hiking Tour', date: '2026-06-02', durationMinutes: 180, notes: 'Guided tour of Meteora', categoryId: 2 },
     { tripId: 2, title: 'Go to Spondi', date: '2026-06-03', durationMinutes: 90, notes: 'Get dinner at Spondi', categoryId: 4 },
-    { tripId: 3, title: 'Visit Eiffel Tower', date: '2026-07-02', durationMinutes: 120, notes: 'Visit the Eiffel Tower', categoryId: 3 },
+    { tripId: 3, title: 'Visit Eiffel Tower', date: '2026-07-02', durationMinutes: 120, notes: 'Visit the Eiffel Tower', categoryId: 1 },
     { tripId: 3, title: 'Go to Le Jules Verne', date: '2026-07-03', durationMinutes: 90, notes: 'Get dinner at Le Jules Verne', categoryId: 4 }
   ]);
 }
@@ -43,7 +43,9 @@ export async function seedTargetsIfEmpty() {
   if (existing.length > 0) return;
 
   await db.insert(targets).values([
-    { timePeriod: 'weekly', targetMinutes: 300},
-    {timePeriod: 'monthly', targetMinutes: 1200}
+    { timePeriod: 'weekly', targetMinutes: 300, categoryId: 1 },
+    { timePeriod: 'monthly', targetMinutes: 1200, categoryId: 1 },
+    { timePeriod: 'weekly', targetMinutes: 250, categoryId: 2 },
+    { timePeriod: 'monthly', targetMinutes: 1000, categoryId: 2 }
   ]);
 }

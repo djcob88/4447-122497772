@@ -23,6 +23,18 @@ export default function TabLayout() {
         name="targets"
         options={{ title: 'Targets' }}
       />
+      <Tabs.Screen
+        name="targets_add"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="target/[id]/edit"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="insights"
+        options={{ title: 'Insights' }}
+      />
     </Tabs>
   );
 }
