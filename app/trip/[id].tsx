@@ -9,6 +9,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
 import { trips as tripsTable, categories as categoriesTable, activities as activitiesTable } from '@/db/schema';
 import { Trip, TripContext } from '../_layout';
+import { Dropdown } from 'react-native-element-dropdown';
 
 export type Activity = {
   id: number;
@@ -24,8 +25,9 @@ export default function TripDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const context = useContext(TripContext);
-  const [category, setCategory] = useState<{ name: string; colour: string; icon: string } | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [categories, setCategories] = useState<{ id: number; name: string; colour: string; icon: string }[]>([]);
 
   if (!context) return null;
 
@@ -36,31 +38,24 @@ export default function TripDetail() {
   );
 
   useEffect(() => {
-    if (!trip) return;
-
-    const loadCategory = async () => {
+    const loadCategories = async () => {
       const rows = await db.select().from(categoriesTable);
-      const found = rows.find(c => c.id === trip.categoryId) ?? null;
-      setCategory(found);
+      setCategories(rows);
     };
-
-    void loadCategory();
-  }, [trip]);
+    void loadCategories();
+  }, []);
 
  useFocusEffect(
   useCallback(() => {
     if (!trip) return;
-
     const loadActivities = async () => {
       const rows = await db.select().from(activitiesTable);
       const activities = rows.filter(a => a.tripId === trip.id);
       setActivities(activities);
     };
-
     void loadActivities();
     }, [trip])
   );
-
   if (!trip) return null;
 
   const deleteTrip = async () => {
@@ -73,41 +68,50 @@ export default function TripDetail() {
     router.back();
   };
 
+const filteredActivities = activities.filter((a) => {if (categoryId === null) return true;
+  return a.categoryId === categoryId;
+});
+
+  const dropdown = [
+    { label: 'All', value: null}, ...categories.map(c => ({ label: `${c.icon} ${c.name}`, value: c.id }))
+  ];
+
   return (
     <SafeAreaView style={styles.safeArea}>
     <ScrollView showsVerticalScrollIndicator={false}>
       <ScreenHeader title={trip.title} subtitle="Trip details" />
-      {category && (
-        <View style={styles.categoryRow}>
-          <Text style={styles.categoryIcon}>{category.icon}</Text>
-          <Text style={styles.categoryText}>{category.name}</Text>
-        </View>
-      )}
       <View style={styles.tags}>
         <InfoTag label="Destination" value={trip.destination} />
         <InfoTag label="Start Date" value={trip.startDate} />
         <InfoTag label="End Date" value={trip.endDate} />
       </View>
-
       <PrimaryButton
         label="Edit"
         onPress={() =>
-          router.push({
-            pathname: '../trip/[id]/edit',
+          router.push({ pathname: '../trip/[id]/edit',
             params: { id }
           })
         }
       />
-
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Delete" variant="secondary" onPress={deleteTrip} />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Activities</Text>
-        {activities.length === 0 && (
-          <Text style={styles.emptyText}>No activities added yet</Text>
+        <Dropdown
+          style={styles.dropdown}
+          data={dropdown}
+          value={categoryId}
+          onChange={(item) => setCategoryId(item.value)}
+          labelField="label"
+          valueField="value"
+          placeholder="Filter by category"
+        />
+
+        {filteredActivities.length === 0 && (
+          <Text style={styles.emptyText}>No activities added for this category yet</Text>
         )}
-        {activities.map((activity) => (
+        {filteredActivities.map((activity) => (
           <Pressable key={activity.id}
             onPress={() =>
               router.push({ pathname: '../trip/[id]/activity/[activityId]/edit' as any, params: { id, activityId: String(activity.id) }})
@@ -150,19 +154,6 @@ const styles = StyleSheet.create({
   buttonSpacing: {
     marginTop: 10,
   },
-  categoryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  categoryIcon: {
-    fontSize: 18,
-    marginRight: 8,
-  },
-  categoryText: {
-    fontSize: 15,
-    color: '#2c333c',
-  },
   section: {
     marginTop: 24,
   },
@@ -203,5 +194,14 @@ const styles = StyleSheet.create({
     color: '#334155',
     fontSize: 14,
     marginTop: 6,
+  },
+  dropdown: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#c4c4c4',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 12,
   },
 });

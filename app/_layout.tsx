@@ -11,12 +11,10 @@ export type Trip = {
   startDate: string;
   endDate: string;
   notes: string | null;
-  categoryId: number;
 };
 
 type TripContextType = {
-  trips: Trip[];
-  setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;
+  trips: Trip[]; setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;
 };
 
 export const TripContext =

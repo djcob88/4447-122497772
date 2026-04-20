@@ -6,9 +6,9 @@ export async function seedTripsIfEmpty() {
   if (existing.length > 0) return;
 
   await db.insert(trips).values([
-    { title: 'UK Trip', destination: 'Manchester', startDate: '2026-05-01', endDate: '2026-05-08', notes: '1 week trip to Manchester', categoryId: 1 },
-    { title: 'Greece Trip', destination: 'Athens', startDate: '2026-06-01', endDate: '2026-06-08', notes: '1 week trip to Greece', categoryId: 2 },
-    { title: 'France Trip', destination: 'Paris', startDate: '2026-07-01', endDate: '2026-07-08', notes: '1 week trip to France', categoryId: 3 }
+    { title: 'UK Trip', destination: 'Manchester', startDate: '2026-05-01', endDate: '2026-05-08', notes: '1 week trip to Manchester'},
+    { title: 'Greece Trip', destination: 'Athens', startDate: '2026-06-01', endDate: '2026-06-08', notes: '1 week trip to Greece'},
+    { title: 'France Trip', destination: 'Paris', startDate: '2026-07-01', endDate: '2026-07-08', notes: '1 week trip to France'}
   ]);
 }
 

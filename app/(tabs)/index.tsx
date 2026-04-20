@@ -13,12 +13,16 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Trip, TripContext } from '../_layout';
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 export default function IndexScreen() {
   const router = useRouter();
   const context = useContext(TripContext);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [starting, setStarting] = useState<Date | null>(null);
+  const [ending, setEnding] = useState<Date | null>(null);
+  const [showStartingPicker, setShowStartingPicker] = useState(false);
+  const [showEndingPicker, setShowEndingPicker] = useState(false);  
   if (!context) return null;
 
   const { trips } = context;
@@ -29,7 +33,12 @@ export default function IndexScreen() {
       normalizedQuery.length === 0 ||
       trip.title.toLowerCase().includes(normalizedQuery) ||
       trip.destination.toLowerCase().includes(normalizedQuery);
-    return matchesSearch;
+    
+    const tripStart = new Date(trip.startDate);
+    const tripEnd = new Date(trip.endDate);
+    const matchesStarting = !starting || tripEnd >= starting;
+    const matchesEnding = !ending || tripStart <= ending;
+    return matchesSearch && matchesStarting && matchesEnding;
   });
 
   return (
@@ -50,11 +59,43 @@ export default function IndexScreen() {
         placeholder="Search by title or destination"
         style={styles.searchInput}
       />
-
+      <View style={styles.filterRow}>
+        <Pressable style={styles.filterButton} onPress={() => setShowStartingPicker(true)}>
+          <Text style={styles.filterButtonText}>
+            {starting ? `From: ${starting.toLocaleDateString()}` : 'From Date'}
+          </Text>
+        </Pressable>
+        <Pressable style={styles.filterButton} onPress={() => setShowEndingPicker(true)}>
+          <Text style={styles.filterButtonText}>
+            {ending ? `To: ${ending.toLocaleDateString()}` : 'To Date'}
+          </Text>
+        </Pressable>
+          <Pressable
+          style={[styles.filterButton, styles.clearButton]}
+          onPress={() => { setStarting(null); setEnding(null);}}>
+          <Text style={styles.filterButtonText}>Clear</Text>
+          </Pressable>
+      </View>
+      {showStartingPicker && (
+        <View style={styles.pickerContainer}>
+        <DateTimePicker
+          value={starting ?? new Date()}
+          mode="date"
+          display="default"
+          onChange={(_, selectedDate) => { setShowStartingPicker(false); if (selectedDate) setStarting(selectedDate);}}/>
+        </View> )}
+      {showEndingPicker && (
+        <View style={styles.pickerContainer}>
+        <DateTimePicker
+          value={ending ?? new Date()}
+          mode="date"
+          display="default"
+          onChange={(_, selectedDate) => {setShowEndingPicker(false); if (selectedDate) setEnding(selectedDate);}}/>
+        </View> )}
       <ScrollView
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-      >
+>
         {filteredTrips.length === 0 ? (
           <Text style={styles.emptyText}>No trips match your search</Text>
         ) : (
@@ -101,17 +142,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
-  filterButtonSelected: {
-    backgroundColor: '#0F172A',
-    borderColor: '#0F172A',
-  },
   filterButtonText: {
     color: '#0F172A',
     fontSize: 14,
     fontWeight: '500',
-  },
-  filterButtonTextSelected: {
-    color: '#FFFFFF',
   },
   emptyText: {
     color: '#475569',
@@ -119,4 +153,11 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     textAlign: 'center',
   },
+  clearButton: {
+    backgroundColor: '#E2E8F0',
+  },
+  pickerContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  } 
 });
