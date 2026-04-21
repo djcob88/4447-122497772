@@ -60,7 +60,6 @@ export default function AddTrip() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#F8FAFC',
     flex: 1,
     padding: 20,
   },

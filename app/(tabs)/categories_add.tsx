@@ -55,7 +55,6 @@ export default function AddCategory() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#F8FAFC',
     flex: 1,
     paddingHorizontal: 18,
     paddingTop: 10,

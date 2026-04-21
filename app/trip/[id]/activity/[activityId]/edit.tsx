@@ -118,7 +118,6 @@ export default function EditActivity() {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#F8FAFC',
     flex: 1,
     padding: 20,
   },

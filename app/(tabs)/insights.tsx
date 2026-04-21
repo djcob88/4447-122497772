@@ -152,7 +152,6 @@ const series =
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#ffffff',
     flex: 1,
     paddingHorizontal: 18,
     paddingTop: 10,

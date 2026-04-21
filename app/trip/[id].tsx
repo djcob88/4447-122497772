@@ -79,6 +79,7 @@ const filteredActivities = activities.filter((a) => {if (categoryId === null) re
   return (
     <SafeAreaView style={styles.safeArea}>
     <ScrollView showsVerticalScrollIndicator={false}>
+      <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()}/>
       <ScreenHeader title={trip.title} subtitle="Trip details" />
       <View style={styles.tags}>
         <InfoTag label="Destination" value={trip.destination} />
@@ -142,7 +143,6 @@ const filteredActivities = activities.filter((a) => {if (categoryId === null) re
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#F8FAFC',
     flex: 1,
     padding: 20,
   },

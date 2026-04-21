@@ -51,7 +51,7 @@ useEffect(() => {
 
   return (
     <TripContext.Provider value={{ trips, setTrips }}>
-      <Stack />
+      <Stack screenOptions={{headerShown: false, contentStyle: { backgroundColor: '#a5dfdf' },}}/>
     </TripContext.Provider>
   );
 }
