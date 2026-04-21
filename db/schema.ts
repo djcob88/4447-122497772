@@ -32,3 +32,11 @@ export const targets = sqliteTable('targets', {
   targetMinutes: integer('target_minutes').notNull(),
   categoryId: integer('category_id').notNull()
 });
+
+export const users = sqliteTable('users', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  firstname: text('firstname').notNull(),
+  lastname: text('lastname').notNull(),
+  email: text('email').notNull().unique(),
+  password: text('password').notNull()
+});

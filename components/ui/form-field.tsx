@@ -5,9 +5,10 @@ type Props = {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
+  secureTextEntry?: boolean;
 };
 
-export default function FormField({ label, value, onChangeText, placeholder }: Props) {
+export default function FormField({ label, value, onChangeText, placeholder, secureTextEntry }: Props) {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.label}>{label}</Text>
@@ -17,6 +18,7 @@ export default function FormField({ label, value, onChangeText, placeholder }: P
         value={value}
         onChangeText={onChangeText}
         style={styles.input}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );

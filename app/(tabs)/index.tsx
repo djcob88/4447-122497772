@@ -9,11 +9,15 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View,
+  View, Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Trip, TripContext } from '../_layout';
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { useAuth } from '@/context/authcontext';
+import { db } from '@/db/client';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export default function IndexScreen() {
   const router = useRouter();
@@ -22,18 +26,29 @@ export default function IndexScreen() {
   const [starting, setStarting] = useState<Date | null>(null);
   const [ending, setEnding] = useState<Date | null>(null);
   const [showStartingPicker, setShowStartingPicker] = useState(false);
-  const [showEndingPicker, setShowEndingPicker] = useState(false);  
+  const [showEndingPicker, setShowEndingPicker] = useState(false); 
+  const {logout, user} = useAuth();
+  const deletion = async () => {
+  if (!user) return;
+  Alert.alert("Delete Account", "Are you sure you want to delete your account?",
+    [{ text: "Cancel", style: "cancel" },
+      {text: "Delete", style: "destructive",
+        onPress: async () => { try { await db.delete(users).where(eq(users.id, user.id));
+            logout();
+          } catch {
+            Alert.alert("Error", "Could not delete account");
+          }}, }, ]
+          );
+        };
   if (!context) return null;
-
-  const { trips } = context;
+  const {trips} = context;
   const normalizedQuery = searchQuery.trim().toLowerCase();
-
   const filteredTrips = trips.filter((trip: Trip) => {
     const matchesSearch =
       normalizedQuery.length === 0 ||
       trip.title.toLowerCase().includes(normalizedQuery) ||
       trip.destination.toLowerCase().includes(normalizedQuery);
-    
+
     const tripStart = new Date(trip.startDate);
     const tripEnd = new Date(trip.endDate);
     const matchesStarting = !starting || tripEnd >= starting;
@@ -47,7 +62,12 @@ export default function IndexScreen() {
         title="Trips"
         subtitle={`${trips.length} planned`}
       />
-
+      <View style={styles.logout}>
+        <PrimaryButton label="Logout" variant="secondary" onPress={logout}/>
+      </View>
+      <View style={styles.delete}>
+        <PrimaryButton label="Delete Account" variant="secondary" onPress={deletion} />
+      </View>
       <PrimaryButton
         label="Add Trip"
         onPress={() => router.push({ pathname: '../add' })}
@@ -159,5 +179,11 @@ const styles = StyleSheet.create({
   pickerContainer: {
     marginTop: 10,
     alignItems: 'center',
-  } 
+  },
+  logout: {
+    marginTop: 10,
+},
+  delete: {
+    marginTop: 10,
+},
 });
