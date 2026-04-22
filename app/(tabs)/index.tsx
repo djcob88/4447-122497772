@@ -62,14 +62,9 @@ export default function IndexScreen() {
         title="Trips"
         subtitle={`${trips.length} planned`}
       />
-      <View style={styles.logout}>
-        <PrimaryButton label="Logout" variant="secondary" onPress={logout}/>
-      </View>
-      <View style={styles.delete}>
-        <PrimaryButton label="Delete Account" variant="secondary" onPress={deletion} />
-      </View>
       <PrimaryButton
         label="Add Trip"
+        variant="accent"
         onPress={() => router.push({ pathname: '../add' })}
       />
 
@@ -113,6 +108,7 @@ export default function IndexScreen() {
           onChange={(_, selectedDate) => {setShowEndingPicker(false); if (selectedDate) setEnding(selectedDate);}}/>
         </View> )}
       <ScrollView
+        style={styles.tripList}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
 >
@@ -124,6 +120,14 @@ export default function IndexScreen() {
           ))
         )}
       </ScrollView>
+      <View style={styles.accountActions}>
+      <View style={styles.logout}>
+        <PrimaryButton label="Logout" variant="secondary" onPress={logout}/>
+      </View>
+      <View style={styles.delete}>
+        <PrimaryButton label="Delete Account" variant="danger" onPress={deletion} />
+      </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -131,35 +135,38 @@ export default function IndexScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: 18,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 16,
+  },
+  tripList: {
+    flex: 1,
   },
   searchInput: {
     backgroundColor: '#FFFFFF',
     borderColor: '#94A3B8',
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
-    marginTop: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    marginTop: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
   },
   filterRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 10,
+    gap: 10,
+    marginTop: 12,
   },
   filterButton: {
     backgroundColor: '#FFFFFF',
     borderColor: '#94A3B8',
     borderRadius: 999,
     borderWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
   },
   filterButtonText: {
     color: '#0F172A',
@@ -169,20 +176,30 @@ const styles = StyleSheet.create({
   emptyText: {
     color: '#475569',
     fontSize: 16,
-    paddingTop: 8,
+    paddingTop: 12,
     textAlign: 'center',
   },
   clearButton: {
     backgroundColor: '#E2E8F0',
   },
   pickerContainer: {
-    marginTop: 10,
+    marginTop: 12,
     alignItems: 'center',
   },
+  accountActions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'flex-end',
+    marginTop: 12,
+    marginBottom: 6,
+    paddingTop: 4,
+  },
   logout: {
-    marginTop: 10,
+    marginTop: 0,
 },
   delete: {
-    marginTop: 10,
+    marginTop: 0,
+    marginBottom: 0,
 },
 });

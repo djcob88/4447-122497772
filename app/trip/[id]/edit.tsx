@@ -63,7 +63,7 @@ export default function EditTrip() {
         <FormField label="Notes" value={notes} onChangeText={setNotes} />
       </View>
 
-      <PrimaryButton label="Save Changes" onPress={saveChanges} />
+      <PrimaryButton label="Save Changes" variant="accent" onPress={saveChanges} />
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()} />
       </View>
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   form: {
     marginBottom: 6,
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
 });

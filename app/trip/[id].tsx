@@ -1,8 +1,8 @@
 import { useLocalSearchParams, useRouter, useFocusEffect } from 'expo-router';
 import { useContext, useEffect, useState, useCallback } from 'react';
-import InfoTag from '@/components/ui/info-tag';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
+import TripDetails from '@/components/ui/trip-details';
 import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
@@ -78,16 +78,14 @@ const filteredActivities = activities.filter((a) => {if (categoryId === null) re
 
   return (
     <SafeAreaView style={styles.safeArea}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()}/>
+    <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       <ScreenHeader title={trip.title} subtitle="Trip details" />
-      <View style={styles.tags}>
-        <InfoTag label="Destination" value={trip.destination} />
-        <InfoTag label="Start Date" value={trip.startDate} />
-        <InfoTag label="End Date" value={trip.endDate} />
+      <View style={styles.detailsCard}>
+        <TripDetails destination={trip.destination} startDate={trip.startDate} endDate={trip.endDate} />
       </View>
       <PrimaryButton
         label="Edit"
+        variant="accent"
         onPress={() =>
           router.push({ pathname: '../trip/[id]/edit',
             params: { id }
@@ -129,6 +127,7 @@ const filteredActivities = activities.filter((a) => {if (categoryId === null) re
 
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Add Activity"
+          variant="accent"
           onPress={() =>
             router.push({pathname: '../trip/[id]/activities_add', params: { id }})
           }
@@ -137,6 +136,9 @@ const filteredActivities = activities.filter((a) => {if (categoryId === null) re
 
       </View>
       </ScrollView>
+      <View style={styles.backButton}>
+        <PrimaryButton label="Back" variant="secondary" onPress={() => router.back()}/>
+      </View>
     </SafeAreaView>
   );
 }
@@ -145,10 +147,13 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
-  tags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  content: {
+    paddingBottom: 92,
+    paddingTop: 6,
+  },
+  detailsCard: {
     marginBottom: 18,
   },
   buttonSpacing: {
@@ -203,5 +208,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 12,
+  },
+  backButton: {
+    bottom: 20,
+    left: 20,
+    position: 'absolute',
   },
 });

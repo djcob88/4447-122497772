@@ -39,7 +39,7 @@ export default function AddCategory() {
           <FormField label="Icon" value={icon} onChangeText={setIcon} />
         </View>
 
-        <PrimaryButton label="Save Category" onPress={saveCategory} />
+        <PrimaryButton label="Save Category" variant="accent" onPress={saveCategory} />
 
         <View style={styles.backButton}>
           <PrimaryButton
@@ -56,12 +56,12 @@ export default function AddCategory() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: 18,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
   form: {
     marginBottom: 6,

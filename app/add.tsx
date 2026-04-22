@@ -49,7 +49,7 @@ export default function AddTrip() {
           <FormField label="End Date" value={endDate} onChangeText={setEndDate} />
           <FormField label="Notes" value={notes} onChangeText={setNotes} />
         </View>
-        <PrimaryButton label="Save Trip" onPress={saveTrip} />
+        <PrimaryButton label="Save Trip" variant="accent" onPress={saveTrip} />
         <View style={styles.backButton}>
           <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()} />
         </View>
@@ -62,9 +62,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   content: {
-    paddingBottom: 24,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
   form: {
     marginBottom: 6,

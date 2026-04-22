@@ -102,16 +102,28 @@ const styles = StyleSheet.create({
   containerCentered: {
     flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingTop: 40,
+    paddingHorizontal: 22,
+    paddingTop: 32,
+    paddingBottom: 24,
     backgroundColor: "#F8FAFC",
   },
   card: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 18,
-    padding: 24,
+    borderRadius: 20,
+    padding: 26,
     borderWidth: 1,
     borderColor: "#E5E7EB",
+    width: "100%",
+    maxWidth: 420,
+    alignSelf: "center",
+    shadowColor: "#0F172A",
+    shadowOpacity: 0.06,
+    shadowRadius: 14,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    elevation: 3,
   },
   title: {
     fontWeight: "800",
@@ -122,19 +134,19 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   formGroup: {
-    marginBottom: 14,
+    marginBottom: 12,
   },
   label: {
     marginBottom: 6,
     fontSize: 14,
     fontWeight: "600",
-    color: "#0F172A",
+    color: "#0a101d",
   },
   primaryButton: {
     marginTop: 10,
     paddingVertical: 6,
   },
   secondaryButton: {
-    marginTop: 6,
+    marginTop: 10,
   },
 });

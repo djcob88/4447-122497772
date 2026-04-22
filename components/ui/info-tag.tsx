@@ -16,7 +16,7 @@ export default function InfoTag({ label, value }: Props) {
 
 const styles = StyleSheet.create({
   tag: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#F8FAFC',
     borderRadius: 999,
     flexDirection: 'row',
     marginRight: 8,

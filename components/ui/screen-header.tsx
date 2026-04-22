@@ -16,16 +16,18 @@ export default function ScreenHeader({ title, subtitle }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   title: {
     color: '#111827',
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 30,
+    fontWeight: '800',
+    letterSpacing: 0.2,
   },
   subtitle: {
-    color: '#6B7280',
-    fontSize: 14,
-    marginTop: 4,
+    color: '#4B5563',
+    fontSize: 15,
+    lineHeight: 21,
+    marginTop: 6,
   },
 });

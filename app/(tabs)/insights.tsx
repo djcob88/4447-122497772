@@ -102,20 +102,21 @@ const series =
 // End
     return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.listContent}>
-        <ScreenHeader title="Insights" subtitle="View daily, weekly and monthly activity insights"/>
+      <ScreenHeader title="Insights" subtitle="View daily, weekly and monthly activity insights"/>
 
-        <View style={styles.periodRow}>
-          <Pressable onPress={() => setPeriod("daily")} style={[styles.periodButton, period === "daily" ? styles.activeButton : null]}>
-            <Text style={[styles.periodButtonText, period === "daily" ? styles.activeButtonText : null]}>Daily</Text>
-          </Pressable>
-          <Pressable onPress={() => setPeriod("weekly")} style={[styles.periodButton, period === "weekly" ? styles.activeButton : null]}>
-            <Text style={[styles.periodButtonText, period === "weekly" ? styles.activeButtonText : null]}>Weekly</Text>
-          </Pressable>
-          <Pressable onPress={() => setPeriod("monthly")} style={[styles.periodButton, period === "monthly" ? styles.activeButton : null]}>
-            <Text style={[styles.periodButtonText, period === "monthly" ? styles.activeButtonText : null]}>Monthly</Text>
-          </Pressable>
-        </View>
+      <View style={styles.periodRow}>
+        <Pressable onPress={() => setPeriod("daily")} style={[styles.periodButton, period === "daily" ? styles.activeButton : null]}>
+          <Text style={[styles.periodButtonText, period === "daily" ? styles.activeButtonText : null]}>Daily</Text>
+        </Pressable>
+        <Pressable onPress={() => setPeriod("weekly")} style={[styles.periodButton, period === "weekly" ? styles.activeButton : null]}>
+          <Text style={[styles.periodButtonText, period === "weekly" ? styles.activeButtonText : null]}>Weekly</Text>
+        </Pressable>
+        <Pressable onPress={() => setPeriod("monthly")} style={[styles.periodButton, period === "monthly" ? styles.activeButton : null]}>
+          <Text style={[styles.periodButtonText, period === "monthly" ? styles.activeButtonText : null]}>Monthly</Text>
+        </Pressable>
+      </View>
+
+      <ScrollView style={styles.insightsList} showsVerticalScrollIndicator={false} contentContainerStyle={styles.listContent}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Summary</Text>
           <Text style={styles.metric}>Activities: {totalActivities}</Text>
@@ -153,12 +154,15 @@ const series =
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: 18,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 16,
+  },
+  insightsList: {
+    flex: 1,
   },
   periodRow: {
     flexDirection: 'row',

@@ -69,7 +69,7 @@ export default function ActivitiesAdd() {
           ))}
         </View>
 
-        <PrimaryButton label="Save Activity" onPress={saveActivity} />
+        <PrimaryButton label="Save Activity" variant="accent" onPress={saveActivity} />
         <View style={styles.backButton}>
           <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()}/>
         </View>
@@ -82,9 +82,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   content: {
-    paddingBottom: 24,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
   form: {
     marginBottom: 6,

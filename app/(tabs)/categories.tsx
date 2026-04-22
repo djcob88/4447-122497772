@@ -45,6 +45,7 @@ export default function CategoriesScreen() {
       
       <PrimaryButton
         label="Add Category"
+        variant="accent"
         onPress={() => router.push('./categories_add')}
       />
 
@@ -82,12 +83,12 @@ export default function CategoriesScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: 18,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 16,
   },
   card: {
     backgroundColor: '#FFFFFF',
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
   emptyText: {
     color: '#475569',
     fontSize: 16,
-    paddingTop: 8,
+    paddingTop: 12,
     textAlign: 'center',
   },
 });

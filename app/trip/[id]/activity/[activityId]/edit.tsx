@@ -102,7 +102,7 @@ export default function EditActivity() {
           ))}
         </View>
 
-        <PrimaryButton label="Save Changes" onPress={saveChanges} />
+        <PrimaryButton label="Save Changes" variant="accent" onPress={saveChanges} />
 
         <View style={styles.backButton}>
           <PrimaryButton label="Delete" variant="secondary" onPress={deleteActivity} />
@@ -120,9 +120,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   content: {
-    paddingBottom: 24,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
   form: {
     marginBottom: 6,

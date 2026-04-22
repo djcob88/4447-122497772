@@ -92,7 +92,7 @@ export default function EditTarget() {
           ))}
         </View>
 
-        <PrimaryButton label="Save Changes" onPress={saveChanges} />
+        <PrimaryButton label="Save Changes" variant="accent" onPress={saveChanges} />
         <View style={styles.backButton}>
           <PrimaryButton label="Delete Target" variant="secondary" onPress={deleteTarget} />
         </View>
@@ -108,10 +108,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
   form: {
     marginBottom: 6,

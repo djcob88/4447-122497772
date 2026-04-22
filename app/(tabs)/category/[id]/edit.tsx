@@ -66,7 +66,7 @@ export default function EditCategory() {
         <FormField label="Icon (emoji)" value={icon} onChangeText={setIcon} />
       </View>
 
-      <PrimaryButton label="Save Changes" onPress={saveChanges} />
+      <PrimaryButton label="Save Changes" variant="accent" onPress={saveChanges} />
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Delete Category" variant="secondary" onPress={deleteCategory} />
       </View>
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   form: {
     marginBottom: 6,
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
 });

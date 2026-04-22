@@ -83,22 +83,34 @@ export default function LoginScreen() {
     containerCentered: {
       flex: 1,
       justifyContent: "center",
-      paddingHorizontal: 20,
-      paddingTop: 40,
+      paddingHorizontal: 22,
+      paddingTop: 32,
+      paddingBottom: 24,
       backgroundColor: "#F8FAFC",
     },
     card: {
       backgroundColor: "#FFFFFF",
-      borderRadius: 18,
-      padding: 24,
+      borderRadius: 20,
+      padding: 26,
       borderWidth: 1,
       borderColor: "#E5E7EB",
+      width: "100%",
+      maxWidth: 420,
+      alignSelf: "center",
+      shadowColor: "#0F172A",
+      shadowOpacity: 0.06,
+      shadowRadius: 14,
+      shadowOffset: {
+        width: 0,
+        height: 6,
+      },
+      elevation: 3,
     },
     formGroup: {
-      marginBottom: 14,
+      marginBottom: 12,
     },
     secondaryButton: {
-      marginTop: 6,
+      marginTop: 10,
     },
   });
 // End

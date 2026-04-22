@@ -63,7 +63,7 @@ export default function AddTarget() {
           ))}
         </View>
 
-        <PrimaryButton label="Save Target" onPress={saveTarget} />
+        <PrimaryButton label="Save Target" variant="accent" onPress={saveTarget} />
         <View style={styles.backButton}>
           <PrimaryButton
             label="Cancel"
@@ -80,10 +80,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     padding: 20,
+    paddingTop: 24,
   },
   listContent: {
-    paddingBottom: 24,
-    paddingTop: 14,
+    paddingBottom: 28,
+    paddingTop: 6,
   },
   form: {
     marginBottom: 6,

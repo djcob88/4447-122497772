@@ -36,12 +36,10 @@ function AppContent() {
       const rows = await db.select().from(tripsTable);
       setTrips(rows);
     };
-
-    void loadTrips();
+        void loadTrips();
   }, []);
 
-useEffect(() => {
-  if (!mounted) return;
+useEffect(() => {if (!mounted) return;
   if (!rootNavigationState?.key) return;
   const inAuthGroup =
     segments[0] === 'login' || segments[0] === 'register';
@@ -51,7 +49,7 @@ useEffect(() => {
 
   return (
     <TripContext.Provider value={{ trips, setTrips }}>
-      <Stack screenOptions={{headerShown: false, contentStyle: { backgroundColor: '#a5dfdf' },}}/>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#a5dfdf' },}}/>
     </TripContext.Provider>
   );
 }

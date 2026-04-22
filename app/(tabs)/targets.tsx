@@ -126,9 +126,13 @@ export default function TargetsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ScreenHeader title="Targets" subtitle="View your progress on your existing targets"/>
+      <ScreenHeader title="Targets" subtitle="View your progress on your existing targets"/>
 
+      <View style={styles.buttonSpacing}>
+        <PrimaryButton label="Add Target" variant="accent" onPress={() => router.push('./targets_add')} />
+      </View>
+
+      <ScrollView style={styles.targetList} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
         {targets.length === 0 ? (
           <Text style={styles.emptyText}>No targets set yet</Text>
         ) : (
@@ -165,10 +169,6 @@ export default function TargetsScreen() {
             );
           })
         )}
-
-        <View style={styles.buttonSpacing}>
-          <PrimaryButton label="Add Target" onPress={() => router.push('./targets_add')} />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -177,8 +177,15 @@ export default function TargetsScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: 18,
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: 18,
+  },
+  listContent: {
+    paddingBottom: 28,
+    paddingTop: 16,
+  },
+  targetList: {
+    flex: 1,
   },
   card: {
     backgroundColor: '#FFFFFF',
@@ -226,10 +233,11 @@ const styles = StyleSheet.create({
   emptyText: {
     color: '#475569',
     fontSize: 16,
-    paddingTop: 8,
+    paddingTop: 12,
     textAlign: 'center',
   },
   buttonSpacing: {
-    marginTop: 10,
+    marginTop: 12,
+    marginBottom: 4,
   },
 });

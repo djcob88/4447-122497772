@@ -4,7 +4,7 @@ type Props = {
   label: string;
   onPress: () => void;
   compact?: boolean;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'accent';
 };
 
 export default function PrimaryButton({
@@ -22,6 +22,7 @@ export default function PrimaryButton({
         styles.button,
         variant === 'secondary' ? styles.secondary : null,
         variant === 'danger' ? styles.danger : null,
+        variant === 'accent' ? styles.accent : null,
         compact ? styles.compact : null,
         pressed ? styles.pressed : null,
       ]}
@@ -57,6 +58,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF2F2',
     borderColor: '#FCA5A5',
     borderWidth: 1,
+  },
+  accent: {
+    backgroundColor: '#00b4d0',
   },
   compact: {
     alignSelf: 'flex-start',
