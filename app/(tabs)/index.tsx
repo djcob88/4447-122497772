@@ -48,7 +48,6 @@ export default function IndexScreen() {
       normalizedQuery.length === 0 ||
       trip.title.toLowerCase().includes(normalizedQuery) ||
       trip.destination.toLowerCase().includes(normalizedQuery);
-
     const tripStart = new Date(trip.startDate);
     const tripEnd = new Date(trip.endDate);
     const matchesStarting = !starting || tripEnd >= starting;

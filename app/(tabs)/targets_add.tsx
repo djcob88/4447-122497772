@@ -12,6 +12,7 @@ import {
     View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Dropdown } from 'react-native-element-dropdown';
 
 export type Category = {
   id: number;
@@ -45,14 +46,26 @@ export default function AddTarget() {
         });
     router.back();
 };
+const timeOptions = [
+  { label: 'Weekly', value: 'weekly' },
+  { label: 'Monthly', value: 'monthly' },
+];
 
     return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.listContent}>
         <ScreenHeader title="Add Target" subtitle="Make a new target for your trips"/>
-
         <View style={styles.form}>
-          <FormField label="Time Period" value={timePeriod} onChangeText={setTimePeriod} placeholder="weekly or monthly"/>
+          <Text style={styles.label}>Time Period</Text>
+          <Dropdown
+            style={styles.dropdown}
+            data={timeOptions}
+            labelField="label"
+            valueField="value"
+            placeholder="Select time period"
+            value={timePeriod}
+            onChange={(item) => setTimePeriod(item.value)}
+            />
           <FormField label="Target Minutes" value={targetMinutes} onChangeText={setTargetMinutes}/>
           <FormField label="Category ID" value={categoryId} onChangeText={setCategoryId}/>
         </View>
@@ -110,5 +123,20 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginTop: 10,
+  },
+  label: {
+    color: '#334155',
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  dropdown: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#CBD5E1',
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 12,
   },
 });

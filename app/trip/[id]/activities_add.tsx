@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { db } from "@/db/client";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { activities as activitiesTable, categories as categoriesTable } from "@/db/schema";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export type Category = {
   id: number;
@@ -24,6 +25,14 @@ export default function ActivitiesAdd() {
   const [ notes, setNotes ] = useState("");
   const [ categoryId, setCategoryId ] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
+  const [starting, setStarting] = useState<Date | null>(null);
+  const [showStartingPicker, setShowStartingPicker] = useState(false);
+  const formatDate = (date: Date) => { const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -51,10 +60,21 @@ export default function ActivitiesAdd() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <ScreenHeader title="Add Activity" subtitle="Create a new activity." />
-
         <View style={styles.form}>
           <FormField label="Title" value={title} onChangeText={setTitle} />
-          <FormField label="Date" value={date} onChangeText={setDate} />
+          <View style={styles.dateField}>
+          <Text style={styles.label}>Date</Text>
+          <Pressable style={styles.filterButton} onPress={() => setShowStartingPicker(true)}>
+            <Text style={[styles.filterButtonText, !date ? styles.placeholderText : null]}>{date || 'Select date'}</Text>
+          </Pressable>
+          {showStartingPicker && (
+            <DateTimePicker
+              value={starting || new Date()}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {setShowStartingPicker(false); if (selectedDate) {setStarting(selectedDate); setDate(formatDate(selectedDate));}}}/>
+            )}
+        </View>
           <FormField label="Duration Minutes" value={durationMinutes} onChangeText={setDurationMinutes}/>
           <FormField label="Notes" value={notes} onChangeText={setNotes} />
           <FormField label="Category ID" value={categoryId} onChangeText={setCategoryId}/>
@@ -68,7 +88,6 @@ export default function ActivitiesAdd() {
             </Text>
           ))}
         </View>
-
         <PrimaryButton label="Save Activity" variant="accent" onPress={saveActivity} />
         <View style={styles.backButton}>
           <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()}/>
@@ -113,4 +132,29 @@ const styles = StyleSheet.create({
   backButton: {
     marginTop: 10,
   },
+  filterButton: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#CBD5E1',
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  filterButtonText: {
+    color: '#0F172A',
+    fontSize: 15,
+  },
+  label: {
+    color: '#334155',
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  placeholderText: {
+    color: '#94A3B8',
+  },
+  dateField: {
+    marginBottom: 12,
+  },
 });
+

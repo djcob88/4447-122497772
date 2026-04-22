@@ -141,17 +141,12 @@ export default function TargetsScreen() {
             const currentMinutes = getCurrentMinutesForTarget(activities, target);
             const remaining = target.targetMinutes - currentMinutes; 
             const progress = Math.min((currentMinutes / target.targetMinutes) * 100, 100); 
-
             return (
             <Pressable
               key={target.id}
-              onPress={() =>
-                router.push({
-                  pathname: './target/[id]/edit' as any, params: { id: String(target.id) }
-                })
+              onPress={() => router.push({pathname: './target/[id]/edit' as any, params: { id: String(target.id) }})
               }
-              style={({ pressed }) => [
-                styles.card, pressed ? { opacity: 0.8 } : null,
+              style={({ pressed }) => [styles.card, pressed ? { opacity: 0.8 } : null,
               ]}
             >
                 <Text style={styles.cardTitle}>{category ? `${category.icon} ${category.name}` : 'Category'}</Text> 
