@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
@@ -75,6 +75,15 @@ export default function EditActivity() {
   if (!activity) return null;
 
   const saveChanges = async () => {
+    if (!title || !date || !durationMinutes || !categoryId) {
+      Alert.alert('Missing fields', 'Please fill in all required fields');
+      return; }
+    if (Number(durationMinutes) <= 0 || Number.isNaN(Number(durationMinutes))) {
+      Alert.alert('Invalid duration', 'Duration minutes must be greater than 0.');
+      return; }
+    if (Number(categoryId) <= 0 || Number.isNaN(Number(categoryId))) {
+      Alert.alert('Invalid category', 'Please enter a valid category ID.');
+      return; }
     await db
       .update(activitiesTable)
       .set({ title, date, durationMinutes: Number(durationMinutes), notes, categoryId: Number(categoryId) })

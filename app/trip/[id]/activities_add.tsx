@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/db/client";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { activities as activitiesTable, categories as categoriesTable } from "@/db/schema";
-import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -44,7 +44,16 @@ export default function ActivitiesAdd() {
     }, []);
 
   const saveActivity = async () => {
-    if (!id || !title || !date || !durationMinutes || !categoryId) return;
+    if (!id || !title || !date || !durationMinutes || !categoryId) {
+      Alert.alert('Missing fields', 'Please fill in all required fields');
+      return; }
+    if (Number(durationMinutes) <= 0 || Number.isNaN(Number(durationMinutes))) {
+    Alert.alert('Invalid duration', 'Duration minutes must be greater than 0.');
+    return; }
+    if (Number(categoryId) <= 0 || Number.isNaN(Number(categoryId))) {
+      Alert.alert('Invalid category', 'Please enter a valid category ID.');
+      return; }
+
     await db.insert(activitiesTable).values({
         tripId: Number(id),
         title,

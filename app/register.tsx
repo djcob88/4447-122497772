@@ -18,7 +18,7 @@ export default function RegisterScreen() {
     const handleRegister = async () => {
         if (!firstname || !lastname || !email || !password) {
            return Alert.alert("Missing Info", "Please fill in all fields");
-        }
+        } 
         setLoading(true);
 
         try {
@@ -49,7 +49,7 @@ export default function RegisterScreen() {
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
       <View style={styles.containerCentered}>
         <View style={styles.card}>
-          <ScreenHeader title="Create account" subtitle="Create an account to plan your trips" />
+          <ScreenHeader title="Create account" subtitle="Sign up for TripPulse today!" />
           <View style={styles.formGroup}>
             <FormField
               label="First Name"
@@ -83,6 +83,7 @@ export default function RegisterScreen() {
 
           <PrimaryButton
             label={loading ? "Creating..." : "Create Account"}
+            variant="accent"
             onPress={handleRegister}
           />
           <View style={styles.secondaryButton}>

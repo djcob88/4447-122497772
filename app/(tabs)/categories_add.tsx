@@ -8,7 +8,7 @@ import { useRouter } from "expo-router";
 import { 
     ScrollView, 
     StyleSheet, 
-    View, Pressable, Text
+    View, Pressable, Text, Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -19,7 +19,9 @@ export default function AddCategory() {
     const [icon, setIcon] = useState('');
 
     const saveCategory = async () => {
-        if (!name || !colour || !icon) return;
+      if (!name || !colour || !icon) {
+        Alert.alert('Missing fields', 'Please enter all fields before saving.');
+        return; }
         await db.insert(categoriesTable).values({
             name,
             colour,

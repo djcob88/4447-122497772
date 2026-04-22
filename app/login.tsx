@@ -20,6 +20,10 @@ export default function LoginScreen() {
       Alert.alert("You are currently logged in");
       return;
     }
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Missing fields", "Please enter your email and password.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -49,7 +53,7 @@ export default function LoginScreen() {
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
       <View style={styles.containerCentered}>
         <View style={styles.card}>
-          <ScreenHeader title="Login" subtitle="Log in to your account"/>
+          <ScreenHeader title="TripPulse" subtitle="Welcome back!"/>
 
           <View style={styles.formGroup}>
             <FormField
@@ -68,7 +72,7 @@ export default function LoginScreen() {
           </View>
 
           <PrimaryButton
-            label={loading ? "Logging in..." : "Login"} onPress={login}/>
+            label={loading ? "Logging in..." : "Login"} variant="accent" onPress={login}/>
           <View style={styles.secondaryButton}>
             <PrimaryButton 
             label="Go to Sign Up" variant="secondary" onPress={() => router.push("/register" as any)}/>

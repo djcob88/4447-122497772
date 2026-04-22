@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Pressable, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
@@ -50,14 +50,19 @@ export default function EditTrip() {
   const { setTrips } = context;
 
   const saveChanges = async () => {
+  if (!title.trim() || !destination.trim() || !startDate || !endDate) {
+    Alert.alert('Missing fields', 'Please fill in all required fields');
+    return; }
+  if (endDate < startDate) {
+    Alert.alert('Invalid dates', 'End Date cannot be before Start Date');
+    return; }
+
     await db
       .update(tripsTable)
       .set({ title, destination, startDate, endDate, notes })
       .where(eq(tripsTable.id, Number(id)));
-
     const rows = await db.select().from(tripsTable);
     setTrips(rows);
-
     router.back();
   };
 

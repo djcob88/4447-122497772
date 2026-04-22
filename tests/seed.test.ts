@@ -26,9 +26,11 @@ describe('seed functions', () => {
     expect(mockDb.insert).toHaveBeenCalled();
     expect(mockValues).toHaveBeenCalledWith(
       expect.arrayContaining([
+        expect.objectContaining({ title: 'Italy Trip' }),
         expect.objectContaining({ title: 'UK Trip' }),
+        expect.objectContaining({ title: 'Spain Trip' }),
+        expect.objectContaining({ title: 'Portugal Trip' }),
         expect.objectContaining({ title: 'Greece Trip' }),
-        expect.objectContaining({ title: 'France Trip' }),
       ])
     );
   });
@@ -60,6 +62,7 @@ describe('seed functions', () => {
         expect.objectContaining({ name: 'Outdoors' }),
         expect.objectContaining({ name: 'Entertainment' }),
         expect.objectContaining({ name: 'Food' }),
+        expect.objectContaining({ name: 'Relaxation' }),
       ])
     );
   });
@@ -86,9 +89,9 @@ describe('seed functions', () => {
     expect(mockDb.insert).toHaveBeenCalled();
     expect(mockValues).toHaveBeenCalledWith(
       expect.arrayContaining([
-        expect.objectContaining({ title: 'Visit Old Trafford' }),
-        expect.objectContaining({ title: 'Go to the Grand Pacific' }),
-        expect.objectContaining({ title: 'Visit Eiffel Tower' }),
+        expect.objectContaining({ title: 'City Landmarks' }),
+        expect.objectContaining({ title: 'Museum Visit' }),
+        expect.objectContaining({ title: 'Festival' }),
       ])
     );
   });
@@ -119,7 +122,7 @@ describe('seed functions', () => {
     expect(mockValues).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({ timePeriod: 'weekly', targetMinutes: 300 }),
-        expect.objectContaining({ timePeriod: 'monthly', targetMinutes: 1200 }),
+        expect.objectContaining({ timePeriod: 'monthly', targetMinutes: 900 }),
       ])
     );
   });

@@ -9,7 +9,7 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    View
+    View, Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from 'react-native-element-dropdown';
@@ -37,8 +37,18 @@ export default function AddTarget() {
     }, []);
 
     const saveTarget = async () => {
-        if (!timePeriod || !targetMinutes || !categoryId) return;
-        if (timePeriod !== 'weekly' && timePeriod !== 'monthly') return;
+    if (!timePeriod || !targetMinutes || !categoryId) {
+      Alert.alert('Missing fields', 'Please fill in all required fields');
+      return; }
+    if (timePeriod !== 'weekly' && timePeriod !== 'monthly') {
+      Alert.alert('Invalid time period', 'Please select weekly or monthly');
+      return; }
+    if (Number(targetMinutes) <= 0 || Number.isNaN(Number(targetMinutes))) {
+      Alert.alert('Invalid target', 'Target minutes must be greater than 0.');
+      return; }
+    if (Number(categoryId) <= 0 || Number.isNaN(Number(categoryId))) {
+      Alert.alert('Invalid category', 'Please enter a valid category ID.');
+      return; }
         await db.insert(targetsTable).values({
             timePeriod,
             targetMinutes: Number(targetMinutes),

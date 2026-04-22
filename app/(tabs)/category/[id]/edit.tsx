@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View, ScrollView, Pressable, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Pressable, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
@@ -49,11 +49,13 @@ export default function EditCategory() {
   if (!category) return null;
 
   const saveChanges = async () => {
+  if (!name || !colour || !icon) {
+    Alert.alert('Missing fields', 'Please enter all fields before saving.');
+    return; }
     await db
       .update(categoriesTable)
       .set({ name, colour, icon })
       .where(eq(categoriesTable.id, Number(id)));
-
     router.back();
   };
 

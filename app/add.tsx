@@ -5,7 +5,7 @@ import { db } from '@/db/client';
 import { trips as tripsTable } from '@/db/schema';
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Pressable, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TripContext } from './_layout';
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -31,7 +31,14 @@ export default function AddTrip() {
   if (!context) return null;
   const { setTrips } = context;
   const saveTrip = async () => {
-    if (!title || !destination || !startDate || !endDate ) return;
+    if (!title || !destination || !startDate || !endDate ) {
+      Alert.alert('Missing fields', 'Please enter a title, destination, start date, and end date.');
+      return;
+    }
+    if (endDate < startDate) {
+      Alert.alert('Invalid dates', 'End date cannot be before the start date.');
+      return;
+    }
     await db.insert(tripsTable).values({
       title,
       destination,

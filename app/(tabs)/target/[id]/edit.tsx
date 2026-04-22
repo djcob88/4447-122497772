@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
@@ -66,13 +66,22 @@ export default function EditTarget() {
   if (!target) return null;
 
   const saveChanges = async () => {
-    if (!timePeriod || !targetMinutes || !categoryId) return;
-    if (timePeriod !== 'weekly' && timePeriod !== 'monthly') return;
+    if (!timePeriod || !targetMinutes || !categoryId) {
+      Alert.alert('Missing fields', 'Please fill in all required fields');
+      return; }
+    if (timePeriod !== 'weekly' && timePeriod !== 'monthly') {
+      Alert.alert('Invalid time period', 'Please select weekly or monthly');
+      return; }
+    if (Number(targetMinutes) <= 0 || Number.isNaN(Number(targetMinutes))) {
+      Alert.alert('Invalid target', 'Target minutes must be greater than 0.');
+      return; }
+    if (Number(categoryId) <= 0 || Number.isNaN(Number(categoryId))) {
+      Alert.alert('Invalid category', 'Please enter a valid category ID.');
+      return; }
     await db
       .update(targetsTable)
       .set({ timePeriod, targetMinutes: Number(targetMinutes), categoryId: Number(categoryId) })
       .where(eq(targetsTable.id, Number(id)));
-
     router.back();
   };
 
