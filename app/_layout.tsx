@@ -12,6 +12,7 @@ export type Trip = {
   startDate: string;
   endDate: string;
   notes: string | null;
+  imageUrl: string | null;
 };
 
 type TripContextType = {trips: Trip[]; setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;};

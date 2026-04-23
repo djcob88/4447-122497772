@@ -6,7 +6,8 @@ export const trips = sqliteTable('trips', {
   destination: text('destination').notNull(),
   startDate: text('start_date').notNull(),
   endDate: text('end_date').notNull(),
-  notes: text('notes')
+  notes: text('notes'),
+  imageUrl: text('image_url')
 });
 
 export const categories = sqliteTable('categories', {

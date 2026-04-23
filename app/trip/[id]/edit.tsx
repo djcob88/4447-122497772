@@ -3,13 +3,15 @@ import { useContext, useEffect, useState } from 'react';
 import FormField from '@/components/ui/form-field';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
-import { ScrollView, StyleSheet, View, Pressable, Text, Alert } from 'react-native';
+import { ScrollView, StyleSheet, View, Pressable, Text, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
 import { trips as tripsTable } from '@/db/schema';
 import { Trip, TripContext } from '../../_layout';
 import DateTimePicker from '@react-native-community/datetimepicker'
+import * as ImagePicker from 'expo-image-picker';
+import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '@/db/cloudinary';
 
 
 export default function EditTrip() {
@@ -21,6 +23,9 @@ export default function EditTrip() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [notes, setNotes] = useState('');
+  const [localUri, setLocalUri] = useState<string | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
   const [starting, setStarting] = useState<Date | null>(null);
   const [ending, setEnding] = useState<Date | null>(null);
   const [showStartingPicker, setShowStartingPicker] = useState(false);
@@ -41,16 +46,61 @@ export default function EditTrip() {
     setStartDate(trip.startDate);
     setEndDate(trip.endDate);
     setNotes(trip.notes ?? '');
+    setUploadedUrl(trip.imageUrl ?? '');
   }, [trip]);
 
+  const pickImage = async () => {
+  const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (!perm.granted) {
+    return Alert.alert("Permission needed", "Please allow photo access.");
+  }
 
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    quality: 0.8,
+    allowsEditing: true,
+  });
+
+  if (result.canceled) return;
+
+  const uri = result.assets?.[0]?.uri;
+  if (!uri) return;
+
+  setLocalUri(uri);
+};
+// Code taken from FYP project for uploading images to Cloudinary
+  const uploadToCloudinary = async () => {
+    if (!localUri) return Alert.alert("No image", "Pick an image first.");
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append(
+        "file",
+        {uri: localUri, name: "trip.jpg", type: "image/jpeg",} as any
+      );
+      form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: "POST", body: form,}
+      );
+      const data = await res.json();
+      if (!res.ok) {return Alert.alert("Upload failed", data?.error?.message || "Cloudinary error");}
+
+      setUploadedUrl(data.secure_url);
+      Alert.alert("Uploaded", "Image uploaded to Cloudinary!");
+    } catch {
+      Alert.alert("Error", "Could not upload image.");
+    } finally {
+      setUploading(false);
+    }
+  };
+// End
 
   if (!context || !trip) return null;
 
   const { setTrips } = context;
 
   const saveChanges = async () => {
-  if (!title.trim() || !destination.trim() || !startDate || !endDate) {
+  if (!title || !destination || !startDate || !endDate) {
     Alert.alert('Missing fields', 'Please fill in all required fields');
     return; }
   if (endDate < startDate) {
@@ -59,7 +109,7 @@ export default function EditTrip() {
 
     await db
       .update(tripsTable)
-      .set({ title, destination, startDate, endDate, notes })
+      .set({ title, destination, startDate, endDate, notes, imageUrl: uploadedUrl || null })
       .where(eq(tripsTable.id, Number(id)));
     const rows = await db.select().from(tripsTable);
     setTrips(rows);
@@ -102,6 +152,17 @@ export default function EditTrip() {
         <FormField label="Notes" value={notes} onChangeText={setNotes} />
       </View>
 
+      <View style={styles.photoSection}>
+      {/* Image upload section taken from FYP project */}
+      <Text style={styles.label}>Trip Photo</Text>
+      <PrimaryButton label="Pick Image" variant="secondary" onPress={pickImage} />
+      {localUri ? (<Image source={{ uri: localUri }} style={styles.tripImage} resizeMode="cover" />)
+       : uploadedUrl ? (<Image source={{ uri: uploadedUrl }} style={styles.tripImage} resizeMode="cover" />) : null}
+      <View style={styles.buttonSpacing}>
+        <PrimaryButton label={uploading ? "Uploading..." : "Upload Photo"} variant="accent" onPress={uploadToCloudinary}/>
+      </View>
+      </View>
+      {/* End */}
       <PrimaryButton label="Save Changes" variant="accent" onPress={saveChanges} />
       <View style={styles.buttonSpacing}>
         <PrimaryButton label="Cancel" variant="secondary" onPress={() => router.back()} />
@@ -150,5 +211,15 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     color: '#94A3B8',
+  },
+  photoSection: {
+    marginTop: 10,
+    marginBottom: 12,
+  },
+  tripImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
+    marginTop: 12,
   }
 });

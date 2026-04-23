@@ -3,7 +3,7 @@ import { useContext, useEffect, useState, useCallback } from 'react';
 import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
 import TripDetails from '@/components/ui/trip-details';
-import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db/client';
@@ -80,6 +80,27 @@ const filteredActivities = activities.filter((a) => {if (categoryId === null) re
     <SafeAreaView style={styles.safeArea}>
     <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       <ScreenHeader title={trip.title} subtitle="Trip details" />
+      {/* Trip image section */}
+      {trip.imageUrl ? (
+        <View style={styles.imageCard}>
+          <ImageBackground
+            source={{ uri: trip.imageUrl }}
+            style={styles.tripImage}
+            imageStyle={styles.tripImageSource}
+            resizeMode="cover">
+            <View style={styles.tripImageOverlay}>
+              <View style={styles.tripImageBadge}>
+                <Text style={styles.tripImageBadgeText}>Trip photo</Text>
+              </View>
+              <View style={styles.tripImageInfo}>
+                <Text style={styles.tripImageTitle}>{trip.title}</Text>
+                <Text style={styles.tripImageSubtitle}>{trip.destination}</Text>
+              </View>
+            </View>
+          </ImageBackground>
+        </View>
+      ) : null}
+      {/* End */}
       <View style={styles.detailsCard}>
         <TripDetails destination={trip.destination} startDate={trip.startDate} endDate={trip.endDate} />
       </View>
@@ -156,6 +177,19 @@ const styles = StyleSheet.create({
   detailsCard: {
     marginBottom: 18,
   },
+  imageCard: {
+    backgroundColor: '#FFFFFF',
+    borderColor: '#D6E3EA',
+    borderRadius: 18,
+    borderWidth: 1,
+    elevation: 4,
+    marginBottom: 18,
+    overflow: 'hidden',
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+  },
   buttonSpacing: {
     marginTop: 10,
   },
@@ -213,5 +247,48 @@ const styles = StyleSheet.create({
     bottom: 20,
     left: 20,
     position: 'absolute',
+  },
+  tripImage: {
+    backgroundColor: '#CFE9EF',
+    height: 240,
+    justifyContent: 'space-between',
+  },
+  tripImageSource: {
+    borderRadius: 17,
+  },
+  tripImageOverlay: {
+    backgroundColor: 'rgba(15, 23, 42, 0.18)',
+    flex: 1,
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  tripImageBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  tripImageBadgeText: {
+    color: '#0F172A',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  tripImageInfo: {
+    backgroundColor: 'rgba(15, 23, 42, 0.52)',
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  tripImageTitle: {
+    color: '#F8FAFC',
+    fontSize: 20,
+    fontWeight: '800',
+  },
+  tripImageSubtitle: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '600',
+    marginTop: 4,
   },
 });
